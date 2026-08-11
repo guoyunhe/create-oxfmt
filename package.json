@@ -2,8 +2,10 @@
   "name": "create-oxfmt",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "bin": "dist/create-oxfmt.mjs",
   "scripts": {
+    "build": "tsdown src/create-oxfmt.ts",
+    "self-create": "tsx ./src/create-oxfmt.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,5 +18,16 @@
       "onFail": "download"
     }
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@guoyunhe/oxfmt-config": "^1.1.0",
+    "@types/node": "^26.2.0",
+    "oxfmt": "^0.62.0",
+    "tsdown": "^0.22.14",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.7.0"
+  }
 }
