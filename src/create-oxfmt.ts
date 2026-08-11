@@ -1,13 +1,14 @@
-import { confirm, intro, outro, text } from '@clack/prompts';
+import { confirm, intro, outro, path, text } from '@clack/prompts';
 import { join } from 'node:path';
 
 intro('🪄 create-oxfmt');
 
-const projectPath = await text({
+const projectPath = await path({
   message: 'Project path',
   initialValue: join(process.cwd(), process.argv[2] ?? '.'),
+  directory: true,
   validate(value) {
-    if (!value) return 'Project name is required';
+    if (!value) return 'Project path is required';
   }
 });
 
