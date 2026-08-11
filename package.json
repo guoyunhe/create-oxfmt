@@ -1,36 +1,43 @@
 {
   "name": "create-oxfmt",
   "version": "0.0.0",
-  "description": "",
-  "bin": "dist/create-oxfmt.mjs",
-  "scripts": {
-    "build": "tsdown src/create-oxfmt.ts",
-    "self-create": "tsx ./src/create-oxfmt.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "A CLI tool to create oxfmt configuration for your project",
   "keywords": [],
+  "license": "GPL-3.0-only",
   "author": "",
-  "license": "ISC",
+  "bin": "dist/create-oxfmt.mjs",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsdown src/create-oxfmt.ts src/index.ts",
+    "self-create": "tsx ./src/create-oxfmt.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check ."
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "latest-version": "^9.0.0",
+    "validate-npm-package-name": "^8.0.0",
+    "which-pm": "^4.0.0"
+  },
+  "devDependencies": {
+    "@guoyunhe/oxfmt-config": "^1.1.0",
+    "@types/node": "^26.2.0",
+    "@types/validate-npm-package-name": "^4.0.2",
+    "oxfmt": "^0.63.0",
+    "tsdown": "^0.22.14",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
       "version": "^11.20.0",
       "onFail": "download"
     }
-  },
-  "type": "module",
-  "devDependencies": {
-    "@guoyunhe/oxfmt-config": "^1.1.0",
-    "@types/node": "^26.2.0",
-    "@types/validate-npm-package-name": "^4.0.2",
-    "oxfmt": "^0.62.0",
-    "tsdown": "^0.22.14",
-    "tsx": "^4.23.12",
-    "typescript": "^7.0.2"
-  },
-  "dependencies": {
-    "@clack/prompts": "^1.7.0",
-    "latest-version": "^9.0.0",
-    "validate-npm-package-name": "^8.0.0"
   }
 }

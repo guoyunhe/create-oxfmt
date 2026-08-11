@@ -1,8 +1,21 @@
 #!/usr/bin/env node
 
 import { join } from 'node:path';
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
 
-import { cancel, confirm, intro, isCancel, outro, path, select, text } from '@clack/prompts';
+import {
+  cancel,
+  confirm,
+  intro,
+  isCancel,
+  outro,
+  path,
+  select,
+  spinner,
+  text,
+} from '@clack/prompts';
+import { whichPM } from 'which-pm';
 import validateNpmPackageName from 'validate-npm-package-name';
 
 import * as locales from './messages';
@@ -42,14 +55,14 @@ if (preset === '__custom__') {
     message: messages.customPresetPackageName,
     placeholder: '@foobar/oxfmt-config or oxfmt-config-foobar',
     validate: (value) => {
-        if (!value) {
-            return messages.packageNameRequired;
-        }
-        const {validForNewPackages} = validateNpmPackageName(value);
-        if (!validForNewPackages) {
-            return messages.invalidPackageName;
-        }
-    }
+      if (!value) {
+        return messages.packageNameRequired;
+      }
+      const { validForNewPackages } = validateNpmPackageName(value);
+      if (!validForNewPackages) {
+        return messages.invalidPackageName;
+      }
+    },
   });
 
   if (isCancel(preset)) {
@@ -60,7 +73,7 @@ if (preset === '__custom__') {
 
 const enableEditorConfig = await confirm({
   message: messages.enableEditorConfig,
-  initialValue: true
+  initialValue: true,
 });
 
 if (isCancel(enableEditorConfig)) {
@@ -70,7 +83,7 @@ if (isCancel(enableEditorConfig)) {
 
 const enableVscodeSettings = await confirm({
   message: messages.enableVscodeSettings,
-  initialValue: true
+  initialValue: true,
 });
 
 if (isCancel(enableVscodeSettings)) {
@@ -80,4 +93,23 @@ if (isCancel(enableVscodeSettings)) {
 
 await createOxfmt({ projectPath, preset, enableEditorConfig, enableVscodeSettings });
 
-outro('🎉 You are all set! Run `npm format` to format your code.');
+const installDependencies = await confirm({
+  message: messages.installDependencies,
+  initialValue: true,
+});
+
+if (isCancel(installDependencies)) {
+  cancel(messages.operationCancelled);
+  process.exit(0);
+}
+
+if (installDependencies) {
+  const pm = await whichPM(projectPath);
+  const execAsync = promisify(exec);
+  const s = spinner();
+  s.start(messages.installingDependencies);
+  await execAsync(`${pm?.name || 'npm'} install`, { cwd: projectPath });
+  s.stop(messages.dependenciesInstalled);
+}
+
+outro(messages.congratulations);
