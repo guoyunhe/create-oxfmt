@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { confirm, intro, outro, path, text } from '@clack/prompts';
 import { join } from 'node:path';
 
