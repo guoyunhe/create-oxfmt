@@ -2,7 +2,13 @@
   "name": "create-oxfmt",
   "version": "1.0.0",
   "description": "A CLI tool to create oxfmt configuration for your project",
-  "keywords": [],
+  "keywords": [
+    "oxfmt",
+    "formatter",
+    "code-style",
+    "config",
+    "cli"
+  ],
   "license": "GPL-3.0-only",
   "author": "",
   "bin": "dist/create-oxfmt.mjs",
