@@ -55,6 +55,12 @@ export default async function createOxfmt({
 
   await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
 
+  await writeFile(
+    `${projectPath}/.oxfmtrc.json`,
+    JSON.stringify({ extends: preset }, null, 2),
+    'utf-8',
+  );
+
   if (enableEditorConfig) {
     await writeFile(`${projectPath}/.editorconfig`, DEFAULT_EDITORCONFIG, 'utf-8');
   }
@@ -70,5 +76,19 @@ export default async function createOxfmt({
     vscodeSettings['editor.formatOnSave'] = true;
     vscodeSettings['editor.defaultFormatter'] = 'oxc.oxc-vscode';
     await writeFile(vscodeSettingsPath, JSON.stringify(vscodeSettings, null, 2), 'utf-8');
+
+    // extensions
+    const vscodeExtensionsPath = `${projectPath}/.vscode/extensions.json`;
+    let vscodeExtensions: any = {};
+    try {
+      vscodeExtensions = JSON.parse(await readFile(vscodeExtensionsPath, 'utf-8'));
+    } catch (err) {
+      await mkdir(`${projectPath}/.vscode`, { recursive: true });
+    }
+    vscodeExtensions['recommendations'] = vscodeExtensions['recommendations'] || [];
+    if (!vscodeExtensions['recommendations'].includes('oxc.oxc-vscode')) {
+      vscodeExtensions['recommendations'].push('oxc.oxc-vscode');
+    }
+    await writeFile(vscodeExtensionsPath, JSON.stringify(vscodeExtensions, null, 2), 'utf-8');
   }
 }
