@@ -3,6 +3,7 @@
 ## 1.5.0 - 2026-08-12
 
 - feat(config): replace .oxfmtrc.json with oxfmt.config.ts, using TypeScript defineConfig format
+- feat(config): delete prettier config files (.prettierrc*, prettier.config.*)
 
 ## 1.4.0 - 2026-08-12
 

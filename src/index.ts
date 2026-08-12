@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { glob, mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
 
 import latestVersion from 'latest-version';
 import { detect, resolveCommand } from 'package-manager-detector';
@@ -57,6 +57,15 @@ export default async function createOxfmt({
     packageJson.devDependencies[preset] = '^' + presetVersion;
   }
   delete packageJson.devDependencies['prettier'];
+
+  // remove existing Prettier config
+  delete packageJson.prettier;
+  const prettierConfigFiles = await Array.fromAsync(
+    glob(['.prettierrc*', 'prettier.config.*'], { cwd: projectPath }),
+  );
+  await Promise.all(
+    prettierConfigFiles.map((file) => unlink(`${projectPath}/${file}`).catch(() => {})),
+  );
 
   const configContent = preset
     ? `import { defineConfig } from 'oxfmt';\nimport preset from '${preset}';\n\nexport default defineConfig({\n  ...preset,\n});\n`
