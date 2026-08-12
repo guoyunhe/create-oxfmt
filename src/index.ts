@@ -3,6 +3,7 @@ import latestVersion from 'latest-version';
 import { detect, resolveCommand } from 'package-manager-detector';
 
 const DEFAULT_EDITORCONFIG = `# https://editorconfig.org
+
 root = true
 
 [*]
