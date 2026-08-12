@@ -9,16 +9,37 @@
     "formatter",
     "oxfmt"
   ],
+  "homepage": "https://github.com/guoyunhe/create-oxfmt#readme",
+  "bugs": {
+    "url": "https://github.com/guoyunhe/create-oxfmt/issues"
+  },
   "license": "GPL-3.0-only",
-  "author": "",
+  "author": {
+    "name": "Guo Yunhe",
+    "email": "i@guoyunhe.me",
+    "url": "https://guoyunhe.me/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guoyunhe/create-oxfmt.git"
+  },
   "bin": "dist/create-oxfmt.mjs",
   "files": [
     "dist",
     "LICENSE"
   ],
   "type": "module",
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
   "scripts": {
-    "build": "tsdown src/create-oxfmt.ts src/index.ts",
+    "build": "tsdown src/create-oxfmt.ts src/index.ts --dts",
     "self-create": "tsx ./src/create-oxfmt.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "oxfmt --write .",
