@@ -19,6 +19,9 @@ npm create oxfmt
 ◇  Enable EditorConfig
 │  Yes
 │
+◇  Enable pre-commit formatting (husky + lint-staged)
+│  Yes
+│
 ◇  Enable VSCode settings
 │  Yes
 │
