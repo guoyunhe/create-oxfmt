@@ -13,12 +13,12 @@ import {
   spinner,
   text,
 } from '@clack/prompts';
+import { execa } from 'execa';
 import { detect, resolveCommand } from 'package-manager-detector';
 import validateNpmPackageName from 'validate-npm-package-name';
-import { execa } from 'execa';
 
-import * as locales from './messages';
 import createOxfmt from '.';
+import * as locales from './messages';
 
 intro('create-oxfmt 🪄');
 

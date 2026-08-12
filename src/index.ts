@@ -1,4 +1,5 @@
-import { mkdir, readFile, writeFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+
 import latestVersion from 'latest-version';
 import { detect, resolveCommand } from 'package-manager-detector';
 
@@ -57,11 +58,11 @@ export default async function createOxfmt({
   }
   delete packageJson.devDependencies['prettier'];
 
-  await writeFile(
-    `${projectPath}/.oxfmtrc.json`,
-    JSON.stringify({ extends: preset }, null, 2) + '\n',
-    'utf-8',
-  );
+  const configContent = preset
+    ? `import { defineConfig } from 'oxfmt';\nimport preset from '${preset}';\n\nexport default defineConfig({\n  ...preset,\n});\n`
+    : `import { defineConfig } from 'oxfmt';\n\nexport default defineConfig({});\n`;
+
+  await writeFile(`${projectPath}/oxfmt.config.ts`, configContent, 'utf-8');
 
   if (enableHuskyLintStaged) {
     const [huskyVersion, lintStagedVersion] = await Promise.all([

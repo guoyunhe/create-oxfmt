@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0 - 2026-08-12
+
+- feat(config): replace .oxfmtrc.json with oxfmt.config.ts, using TypeScript defineConfig format
+
 ## 1.4.0 - 2026-08-12
 
 - feat(vscode): filter out prettier extensions from recommendations list
