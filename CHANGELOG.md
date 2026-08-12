@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0 - 2026-08-12
+
+- refactor(npm): replace which-pm with package-manager-detector
+
 ## 1.2.0 - 2026-08-12
 
 - feat(types): add types export
