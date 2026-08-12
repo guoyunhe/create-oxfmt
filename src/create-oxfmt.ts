@@ -81,22 +81,22 @@ if (isCancel(enableEditorConfig)) {
   process.exit(0);
 }
 
-const enableVscodeSettings = await confirm({
-  message: messages.enableVscodeSettings,
-  initialValue: true,
-});
-
-if (isCancel(enableVscodeSettings)) {
-  cancel(messages.operationCancelled);
-  process.exit(0);
-}
-
 const enableHuskyLintStaged = await confirm({
   message: messages.enableHuskyLintStaged,
   initialValue: true,
 });
 
 if (isCancel(enableHuskyLintStaged)) {
+  cancel(messages.operationCancelled);
+  process.exit(0);
+}
+
+const enableVscodeSettings = await confirm({
+  message: messages.enableVscodeSettings,
+  initialValue: true,
+});
+
+if (isCancel(enableVscodeSettings)) {
   cancel(messages.operationCancelled);
   process.exit(0);
 }

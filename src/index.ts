@@ -61,6 +61,28 @@ export default async function createOxfmt({
     'utf-8',
   );
 
+  if (enableHuskyLintStaged) {
+    const [huskyVersion, lintStagedVersion] = await Promise.all([
+      latestVersion('husky'),
+      latestVersion('lint-staged'),
+    ]);
+
+    packageJson.scripts = packageJson.scripts || {};
+    packageJson.scripts['prepare'] = 'husky';
+    packageJson['lint-staged'] = { ...packageJson['lint-staged'], '*': 'oxfmt --write' };
+    packageJson.devDependencies = packageJson.devDependencies || {};
+    packageJson.devDependencies['husky'] = '^' + huskyVersion;
+    packageJson.devDependencies['lint-staged'] = '^' + lintStagedVersion;
+
+    const pm = packageJson.devEngines?.packageManager?.name || 'npm';
+    const pmx = pm === 'pnpm' ? 'pnpx' : pm === 'yarn' ? 'yarn' : pm === 'bun' ? 'bunx' : 'npx';
+
+    await mkdir(`${projectPath}/.husky`, { recursive: true });
+    await writeFile(`${projectPath}/.husky/pre-commit`, `${pmx} lint-staged\n`, 'utf-8');
+  }
+
+  await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
+
   if (enableEditorConfig) {
     await writeFile(`${projectPath}/.editorconfig`, DEFAULT_EDITORCONFIG, 'utf-8');
   }
@@ -91,26 +113,4 @@ export default async function createOxfmt({
     }
     await writeFile(vscodeExtensionsPath, JSON.stringify(vscodeExtensions, null, 2), 'utf-8');
   }
-
-  if (enableHuskyLintStaged) {
-    const [huskyVersion, lintStagedVersion] = await Promise.all([
-      latestVersion('husky'),
-      latestVersion('lint-staged'),
-    ]);
-
-    packageJson.scripts = packageJson.scripts || {};
-    packageJson.scripts['prepare'] = 'husky';
-    packageJson['lint-staged'] = { ...packageJson['lint-staged'], '*': 'oxfmt --write' };
-    packageJson.devDependencies = packageJson.devDependencies || {};
-    packageJson.devDependencies['husky'] = '^' + huskyVersion;
-    packageJson.devDependencies['lint-staged'] = '^' + lintStagedVersion;
-
-    const pm = packageJson.devEngines?.packageManager?.name || 'npm';
-    const pmx = pm === 'pnpm' ? 'pnpx' : pm === 'yarn' ? 'yarn' : pm === 'bun' ? 'bunx' : 'npx';
-
-    await mkdir(`${projectPath}/.husky`, { recursive: true });
-    await writeFile(`${projectPath}/.husky/pre-commit`, `${pmx} lint-staged\n`, 'utf-8');
-  }
-
-  await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
 }
