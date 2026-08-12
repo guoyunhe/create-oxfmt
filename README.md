@@ -4,7 +4,7 @@ A CLI tool to create oxfmt configuration for your project.
 
 ```bash
 cd path/to/your/project
-npx create-oxfmt
+npm create oxfmt
 ```
 
 ```
