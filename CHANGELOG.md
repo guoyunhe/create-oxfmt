@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 - 2026-08-12
+
+- feat(vscode): filter out prettier extensions from recommendations list
+
 ## 1.3.0 - 2026-08-12
 
 - refactor(npm): replace which-pm with package-manager-detector

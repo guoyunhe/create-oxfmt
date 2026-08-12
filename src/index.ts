@@ -113,6 +113,9 @@ export default async function createOxfmt({
       await mkdir(`${projectPath}/.vscode`, { recursive: true });
     }
     vscodeExtensions['recommendations'] = vscodeExtensions['recommendations'] || [];
+    vscodeExtensions['recommendations'] = vscodeExtensions['recommendations'].filter(
+      (ext: string) => ext !== 'esbenp.prettier-vscode' && ext !== 'prettier.prettier-vscode',
+    );
     if (!vscodeExtensions['recommendations'].includes('oxc.oxc-vscode')) {
       vscodeExtensions['recommendations'].push('oxc.oxc-vscode');
     }
