@@ -48,9 +48,10 @@
   },
   "dependencies": {
     "@clack/prompts": "^1.7.0",
+    "execa": "^10.0.1",
     "latest-version": "^9.0.0",
-    "validate-npm-package-name": "^8.0.0",
-    "which-pm": "^4.0.0"
+    "package-manager-detector": "^1.8.0",
+    "validate-npm-package-name": "^8.0.0"
   },
   "devDependencies": {
     "@guoyunhe/oxfmt-config": "^1.1.0",

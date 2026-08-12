@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 
 import { join } from 'node:path';
-import { exec } from 'node:child_process';
-import { promisify } from 'node:util';
 
 import {
   cancel,
@@ -15,8 +13,9 @@ import {
   spinner,
   text,
 } from '@clack/prompts';
-import { whichPM } from 'which-pm';
+import { detect, resolveCommand } from 'package-manager-detector';
 import validateNpmPackageName from 'validate-npm-package-name';
+import { execa } from 'execa';
 
 import * as locales from './messages';
 import createOxfmt from '.';
@@ -120,11 +119,16 @@ if (isCancel(installDependencies)) {
 }
 
 if (installDependencies) {
-  const pm = await whichPM(projectPath);
-  const execAsync = promisify(exec);
+  const pm = await detect({ cwd: projectPath });
+  console.log(pm);
+  const installCommand = resolveCommand(pm?.agent || 'npm', 'install', []) || {
+    command: 'npm',
+    args: ['install'],
+  };
+  console.log(installCommand);
   const s = spinner();
   s.start(messages.installingDependencies);
-  await execAsync(`${pm?.name || 'npm'} install`, { cwd: projectPath });
+  await execa(installCommand.command, installCommand.args, { cwd: projectPath });
   s.stop(messages.dependenciesInstalled);
 }
 

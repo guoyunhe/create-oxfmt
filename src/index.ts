@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'fs/promises';
 import latestVersion from 'latest-version';
+import { detect, resolveCommand } from 'package-manager-detector';
 
 const DEFAULT_EDITORCONFIG = `# https://editorconfig.org
 root = true
@@ -74,11 +75,15 @@ export default async function createOxfmt({
     packageJson.devDependencies['husky'] = '^' + huskyVersion;
     packageJson.devDependencies['lint-staged'] = '^' + lintStagedVersion;
 
-    const pm = packageJson.devEngines?.packageManager?.name || 'npm';
-    const pmx = pm === 'pnpm' ? 'pnpx' : pm === 'yarn' ? 'yarn' : pm === 'bun' ? 'bunx' : 'npx';
+    const pm = await detect({ cwd: projectPath });
+    const executeCommand = resolveCommand(pm?.agent || 'npm', 'execute-local', ['lint-staged']);
 
     await mkdir(`${projectPath}/.husky`, { recursive: true });
-    await writeFile(`${projectPath}/.husky/pre-commit`, `${pmx} lint-staged\n`, 'utf-8');
+    await writeFile(
+      `${projectPath}/.husky/pre-commit`,
+      `${executeCommand?.command} ${executeCommand?.args.join(' ')}\n`,
+      'utf-8',
+    );
   }
 
   await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
