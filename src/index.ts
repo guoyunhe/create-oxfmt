@@ -58,7 +58,7 @@ export default async function createOxfmt({
 
   await writeFile(
     `${projectPath}/.oxfmtrc.json`,
-    JSON.stringify({ extends: preset }, null, 2),
+    JSON.stringify({ extends: preset }, null, 2) + '\n',
     'utf-8',
   );
 
@@ -86,7 +86,7 @@ export default async function createOxfmt({
     );
   }
 
-  await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
+  await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf-8');
 
   if (enableEditorConfig) {
     await writeFile(`${projectPath}/.editorconfig`, DEFAULT_EDITORCONFIG, 'utf-8');
@@ -102,7 +102,7 @@ export default async function createOxfmt({
     }
     vscodeSettings['editor.formatOnSave'] = true;
     vscodeSettings['editor.defaultFormatter'] = 'oxc.oxc-vscode';
-    await writeFile(vscodeSettingsPath, JSON.stringify(vscodeSettings, null, 2), 'utf-8');
+    await writeFile(vscodeSettingsPath, JSON.stringify(vscodeSettings, null, 2) + '\n', 'utf-8');
 
     // extensions
     const vscodeExtensionsPath = `${projectPath}/.vscode/extensions.json`;
@@ -116,6 +116,10 @@ export default async function createOxfmt({
     if (!vscodeExtensions['recommendations'].includes('oxc.oxc-vscode')) {
       vscodeExtensions['recommendations'].push('oxc.oxc-vscode');
     }
-    await writeFile(vscodeExtensionsPath, JSON.stringify(vscodeExtensions, null, 2), 'utf-8');
+    await writeFile(
+      vscodeExtensionsPath,
+      JSON.stringify(vscodeExtensions, null, 2) + '\n',
+      'utf-8',
+    );
   }
 }

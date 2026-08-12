@@ -120,15 +120,16 @@ if (isCancel(installDependencies)) {
 
 if (installDependencies) {
   const pm = await detect({ cwd: projectPath });
-  console.log(pm);
   const installCommand = resolveCommand(pm?.agent || 'npm', 'install', []) || {
     command: 'npm',
     args: ['install'],
   };
-  console.log(installCommand);
+
   const s = spinner();
   s.start(messages.installingDependencies);
+
   await execa(installCommand.command, installCommand.args, { cwd: projectPath });
+
   s.stop(messages.dependenciesInstalled);
 }
 

@@ -3,6 +3,7 @@
 ## 1.3.0 - 2026-08-12
 
 - refactor(npm): replace which-pm with package-manager-detector
+- fix(json): insert final newline
 
 ## 1.2.0 - 2026-08-12
 
