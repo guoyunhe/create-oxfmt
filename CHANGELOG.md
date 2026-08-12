@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 - 2026-08-12
+
+- feat(types): add types export
+
 ## 1.1.0 - 2026-08-12
 
 - feat(lint-staged): add pre-commit hook to run lint-staged with the selected preset
