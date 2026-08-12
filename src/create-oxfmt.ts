@@ -91,7 +91,23 @@ if (isCancel(enableVscodeSettings)) {
   process.exit(0);
 }
 
-await createOxfmt({ projectPath, preset, enableEditorConfig, enableVscodeSettings });
+const enableHuskyLintStaged = await confirm({
+  message: messages.enableHuskyLintStaged,
+  initialValue: true,
+});
+
+if (isCancel(enableHuskyLintStaged)) {
+  cancel(messages.operationCancelled);
+  process.exit(0);
+}
+
+await createOxfmt({
+  projectPath,
+  preset,
+  enableEditorConfig,
+  enableVscodeSettings,
+  enableHuskyLintStaged,
+});
 
 const installDependencies = await confirm({
   message: messages.installDependencies,

@@ -27,12 +27,14 @@ export interface CreateOxfmtOptions {
   preset: string | null;
   enableEditorConfig: boolean;
   enableVscodeSettings: boolean;
+  enableHuskyLintStaged: boolean;
 }
 
 export default async function createOxfmt({
   projectPath,
   enableEditorConfig,
   enableVscodeSettings,
+  enableHuskyLintStaged,
   preset,
 }: CreateOxfmtOptions) {
   const packageJsonPath = `${projectPath}/package.json`;
@@ -52,8 +54,6 @@ export default async function createOxfmt({
     packageJson.devDependencies[preset] = '^' + presetVersion;
   }
   delete packageJson.devDependencies['prettier'];
-
-  await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
 
   await writeFile(
     `${projectPath}/.oxfmtrc.json`,
@@ -91,4 +91,26 @@ export default async function createOxfmt({
     }
     await writeFile(vscodeExtensionsPath, JSON.stringify(vscodeExtensions, null, 2), 'utf-8');
   }
+
+  if (enableHuskyLintStaged) {
+    const [huskyVersion, lintStagedVersion] = await Promise.all([
+      latestVersion('husky'),
+      latestVersion('lint-staged'),
+    ]);
+
+    packageJson.scripts = packageJson.scripts || {};
+    packageJson.scripts['prepare'] = 'husky';
+    packageJson['lint-staged'] = { ...packageJson['lint-staged'], '*': 'oxfmt --write' };
+    packageJson.devDependencies = packageJson.devDependencies || {};
+    packageJson.devDependencies['husky'] = '^' + huskyVersion;
+    packageJson.devDependencies['lint-staged'] = '^' + lintStagedVersion;
+
+    const pm = packageJson.devEngines?.packageManager?.name || 'npm';
+    const pmx = pm === 'pnpm' ? 'pnpx' : pm === 'yarn' ? 'yarn' : pm === 'bun' ? 'bunx' : 'npx';
+
+    await mkdir(`${projectPath}/.husky`, { recursive: true });
+    await writeFile(`${projectPath}/.husky/pre-commit`, `${pmx} lint-staged\n`, 'utf-8');
+  }
+
+  await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
 }

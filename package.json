@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A CLI tool to create oxfmt configuration for your project",
   "keywords": [
-    "oxfmt",
-    "formatter",
+    "cli",
     "code-style",
     "config",
-    "cli"
+    "formatter",
+    "oxfmt"
   ],
   "license": "GPL-3.0-only",
   "author": "",
@@ -22,7 +22,8 @@
     "self-create": "tsx ./src/create-oxfmt.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "oxfmt --write .",
-    "format:check": "oxfmt --check ."
+    "format:check": "oxfmt --check .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@clack/prompts": "^1.7.0",
@@ -34,10 +35,15 @@
     "@guoyunhe/oxfmt-config": "^1.1.0",
     "@types/node": "^26.2.0",
     "@types/validate-npm-package-name": "^4.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
     "oxfmt": "^0.63.0",
     "tsdown": "^0.22.14",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
+  },
+  "lint-staged": {
+    "*": "oxfmt --write"
   },
   "devEngines": {
     "packageManager": {
