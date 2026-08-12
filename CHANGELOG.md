@@ -3,6 +3,7 @@
 ## 1.4.0 - 2026-08-12
 
 - feat(vscode): filter out prettier extensions from recommendations list
+- feat(vscode): replace prettier formatter with oxc in language-specific settings
 
 ## 1.3.0 - 2026-08-12
 

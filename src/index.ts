@@ -102,6 +102,37 @@ export default async function createOxfmt({
     }
     vscodeSettings['editor.formatOnSave'] = true;
     vscodeSettings['editor.defaultFormatter'] = 'oxc.oxc-vscode';
+    vscodeSettings['editor.rulers'] = [100];
+
+    const prettierExtensions = ['esbenp.prettier-vscode', 'prettier.prettier-vscode'];
+    const supportedLanguages = [
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+      'vue',
+      'css',
+      'less',
+      'scss',
+      'html',
+      'json',
+      'jsonc',
+      'markdown',
+      'toml',
+      'yaml',
+    ];
+    for (const lang of supportedLanguages) {
+      const key = `[${lang}]`;
+      const langSettings = vscodeSettings[key];
+      if (
+        typeof langSettings === 'object' &&
+        langSettings !== null &&
+        prettierExtensions.includes(langSettings['editor.defaultFormatter'])
+      ) {
+        langSettings['editor.defaultFormatter'] = 'oxc.oxc-vscode';
+      }
+    }
+
     await writeFile(vscodeSettingsPath, JSON.stringify(vscodeSettings, null, 2) + '\n', 'utf-8');
 
     // extensions
