@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.0 - 2026-08-13
+## 1.5.1 - 2026-08-13
 
 - fix(lint-staged): remove prettier scripts
 - fix(lint-staged): fixed oxfmt script glob pattern
