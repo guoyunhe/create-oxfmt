@@ -1,6 +1,6 @@
 {
   "name": "create-oxfmt",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A CLI tool to create oxfmt configuration for your project",
   "keywords": [
     "cli",
