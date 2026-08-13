@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0 - 2026-08-13
+
+- fix(lint-staged): remove prettier scripts
+- fix(lint-staged): fixed oxfmt script glob pattern
+
 ## 1.5.0 - 2026-08-12
 
 - feat(config): replace .oxfmtrc.json with oxfmt.config.ts, using TypeScript defineConfig format

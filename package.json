@@ -65,7 +65,7 @@
     "typescript": "^7.0.2"
   },
   "lint-staged": {
-    "*": "oxfmt --write"
+    "*.{js,mjs,cjs,ts,mts,cts,jsx,tsx,vue,json,jsonc,css,scss,less,htm,html,md,mdx,yaml,yml}": "oxfmt --write"
   },
   "devEngines": {
     "packageManager": {

@@ -81,7 +81,19 @@ export default async function createOxfmt({
 
     packageJson.scripts = packageJson.scripts || {};
     packageJson.scripts['prepare'] = 'husky';
-    packageJson['lint-staged'] = { ...packageJson['lint-staged'], '*': 'oxfmt --write' };
+    const lintStagedKey =
+      '*.{js,mjs,cjs,ts,mts,cts,jsx,tsx,vue,json,jsonc,css,scss,less,htm,html,md,mdx,yaml,yml}';
+    packageJson['lint-staged'] = packageJson['lint-staged'] || {};
+    Object.keys(packageJson['lint-staged'] || {}).forEach((key) => {
+      if (packageJson['lint-staged'][key] === 'prettier --write') {
+        delete packageJson['lint-staged'][key];
+      }
+      if (packageJson['lint-staged'][key] === 'oxfmt --write' && key !== lintStagedKey) {
+        delete packageJson['lint-staged'][key];
+      }
+    });
+    packageJson['lint-staged'][lintStagedKey] = 'oxfmt --write';
+
     packageJson.devDependencies = packageJson.devDependencies || {};
     packageJson.devDependencies['husky'] = '^' + huskyVersion;
     packageJson.devDependencies['lint-staged'] = '^' + lintStagedVersion;
